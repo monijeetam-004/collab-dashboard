@@ -6,10 +6,10 @@ import {
 } from '../types';
 
 const MOCK_USERS: User[] = [
-  { id: 'u1', name: 'Alice Chen', avatar: 'AC', status: 'online', color: '#6366f1', currentPage: 'Board' },
-  { id: 'u2', name: 'Bob Marsh', avatar: 'BM', status: 'online', color: '#f59e0b', currentPage: 'Dashboard' },
-  { id: 'u3', name: 'Carol Lee', avatar: 'CL', status: 'away', color: '#10b981', currentPage: 'Settings' },
-  { id: 'u4', name: 'Dan Park', avatar: 'DP', status: 'offline', color: '#ef4444', currentPage: undefined },
+  { id: 'u1', name: 'Monijeeta Moitra', avatar: 'MM', status: 'online', color: '#6366f1', currentPage: 'Board' },
+  { id: 'u2', name: 'Jitesh Varshney', avatar: 'JV', status: 'online', color: '#f59e0b', currentPage: 'Dashboard' },
+  { id: 'u3', name: 'Kashvi Nag', avatar: 'KN', status: 'away', color: '#10b981', currentPage: 'Settings' },
+  { id: 'u4', name: 'Harini R', avatar: 'HR', status: 'offline', color: '#ef4444', currentPage: undefined },
 ];
 
 const INITIAL_COLUMNS: Column[] = [
@@ -44,7 +44,7 @@ const INITIAL_ACTIVITY: ActivityItem[] = [
   { id: 'a1', userId: 'u1', action: 'moved', target: 'Authentication setup to Done', timestamp: Date.now() - 60000 * 5 },
   { id: 'a2', userId: 'u2', action: 'created', target: 'API rate limiting', timestamp: Date.now() - 60000 * 15 },
   { id: 'a3', userId: 'u3', action: 'commented on', target: 'Mobile responsiveness', timestamp: Date.now() - 60000 * 30 },
-  { id: 'a4', userId: 'u1', action: 'assigned', target: 'Design system audit to Alice', timestamp: Date.now() - 60000 * 60 },
+  { id: 'a4', userId: 'u1', action: 'assigned', target: 'Design system audit to Monijeeta', timestamp: Date.now() - 60000 * 60 },
 ];
 
 interface AppState {

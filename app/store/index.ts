@@ -79,11 +79,32 @@ interface AppState {
   updateUserStatus: (userId: string, status: User['status']) => void;
 }
 
-function pushHistory(state: AppState, description: string): Pick<AppState, 'history' | 'historyIndex'> {
-  const entry: HistoryEntry = { columns: JSON.parse(JSON.stringify(state.columns)), timestamp: Date.now(), description };
-  const newHistory = state.history.slice(0, state.historyIndex + 1);
-  newHistory.push(entry);
-  return { history: newHistory.slice(-50), historyIndex: newHistory.length - 1 };
+/** Maximum number of snapshots kept for undo/redo. */
+export const MAX_HISTORY = 50;
+
+/**
+ * Record a new board snapshot for undo/redo.
+ *
+ * Model: `history[historyIndex]` is always the board the user currently sees.
+ * `history[0]` is the oldest state that can still be restored. So undo moves
+ * to `historyIndex - 1` and redo to `historyIndex + 1`.
+ *
+ * Pass the board *after* the change. (Previously the board from *before* the
+ * change was stored, so undo skipped a step and redo stopped one step short.)
+ */
+function pushHistory(
+  state: AppState,
+  columns: Column[],
+  description: string,
+): Pick<AppState, 'history' | 'historyIndex'> {
+  const entry: HistoryEntry = { columns: JSON.parse(JSON.stringify(columns)), timestamp: Date.now(), description };
+  // Drop any "redo" entries after the current position, then append.
+  const kept = state.history.slice(0, state.historyIndex + 1);
+  kept.push(entry);
+  // Trim first, then compute the index from the trimmed list. (Previously the
+  // index was computed before trimming and could point past the end.)
+  const trimmed = kept.slice(-MAX_HISTORY);
+  return { history: trimmed, historyIndex: trimmed.length - 1 };
 }
 
 export const useAppStore = create<AppState>()(
@@ -109,8 +130,6 @@ export const useAppStore = create<AppState>()(
       setActiveCard: (card) => set({ activeCard: card }),
 
       moveCard: (cardId, fromCol, toCol, overCardId) => {
-        const state = get();
-        const hist = pushHistory(state, `Moved card to ${toCol}`);
         set(s => {
           const cols = JSON.parse(JSON.stringify(s.columns)) as Column[];
           const from = cols.find(c => c.id === fromCol)!;
@@ -125,47 +144,41 @@ export const useAppStore = create<AppState>()(
           } else {
             to.cards.push(card);
           }
-          return { columns: cols, ...hist };
+          return { columns: cols, ...pushHistory(s, cols, `Moved card to ${toCol}`) };
         });
       },
 
       addCard: (colId, cardData) => {
-        const state = get();
-        const hist = pushHistory(state, `Created "${cardData.title}"`);
         const newCard: Card = { ...cardData, id: `c${Date.now()}`, createdAt: Date.now() };
         set(s => {
           const cols = JSON.parse(JSON.stringify(s.columns)) as Column[];
           const col = cols.find(c => c.id === colId)!;
           col.cards.unshift(newCard);
-          return { columns: cols, ...hist };
+          return { columns: cols, ...pushHistory(s, cols, `Created "${cardData.title}"`) };
         });
         get().addActivity({ userId: 'u1', action: 'created', target: cardData.title });
         get().addNotification(`Card "${cardData.title}" created`, 'success');
       },
 
       updateCard: (cardId, updates) => {
-        const state = get();
-        const hist = pushHistory(state, 'Updated card');
         set(s => {
           const cols = JSON.parse(JSON.stringify(s.columns)) as Column[];
           for (const col of cols) {
             const card = col.cards.find(c => c.id === cardId);
             if (card) { Object.assign(card, updates); break; }
           }
-          return { columns: cols, ...hist };
+          return { columns: cols, ...pushHistory(s, cols, 'Updated card') };
         });
       },
 
       deleteCard: (cardId) => {
-        const state = get();
-        const hist = pushHistory(state, 'Deleted card');
         set(s => {
           const cols = JSON.parse(JSON.stringify(s.columns)) as Column[];
           for (const col of cols) {
             const idx = col.cards.findIndex(c => c.id === cardId);
             if (idx !== -1) { col.cards.splice(idx, 1); break; }
           }
-          return { columns: cols, ...hist };
+          return { columns: cols, ...pushHistory(s, cols, 'Deleted card') };
         });
         get().addNotification('Card deleted', 'info');
       },

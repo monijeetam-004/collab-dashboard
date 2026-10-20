@@ -38,9 +38,15 @@ export function CommandPalette() {
     return acc;
   }, {} as Record<string, Command[]>);
 
-  useEffect(() => {
+  // Clear the search text whenever the palette closes. This adjusts state
+  // during render when `commandPaletteOpen` changes (React's recommended
+  // alternative to calling setState inside an effect, which caused an extra
+  // render and the react-hooks/set-state-in-effect lint error).
+  const [prevOpen, setPrevOpen] = useState(commandPaletteOpen);
+  if (prevOpen !== commandPaletteOpen) {
+    setPrevOpen(commandPaletteOpen);
     if (!commandPaletteOpen) setQuery('');
-  }, [commandPaletteOpen]);
+  }
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setCommandPaletteOpen(false); };

@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import { useAppStore } from '../store';
 
-const PAGES = ['Board', 'Dashboard', 'Analytics', 'Settings'];
 const STATUSES: Array<'online' | 'away' | 'offline'> = ['online', 'online', 'online', 'away', 'offline'];
 
 export function usePresence() {

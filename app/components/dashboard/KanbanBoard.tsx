@@ -1,6 +1,6 @@
 'use client';
 import {
-  DndContext, DragEndEvent, DragOverEvent, DragStartEvent,
+  DndContext, DragEndEvent, DragStartEvent,
   PointerSensor, useSensor, useSensors, DragOverlay, closestCorners
 } from '@dnd-kit/core';
 import { useAppStore } from '../../store';

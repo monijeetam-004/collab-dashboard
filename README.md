@@ -1,6 +1,6 @@
 # CollabSpace — Live Collaboration Dashboard
 
-A highly interactive, state-driven SaaS product interface built with Next.js 15, Zustand, Framer Motion, and @dnd-kit.
+A highly interactive, state-driven SaaS product interface built with Next.js 16, Zustand, Framer Motion, and @dnd-kit.
 
 ## Features
 
@@ -31,7 +31,7 @@ A highly interactive, state-driven SaaS product interface built with Next.js 15,
 
 | Tool | Purpose |
 |------|---------|
-| Next.js 15 (App Router) | Framework |
+| Next.js 16 (App Router) | Framework |
 | TypeScript | Type safety |
 | Tailwind CSS v4 | Styling |
 | Zustand | Global state management |

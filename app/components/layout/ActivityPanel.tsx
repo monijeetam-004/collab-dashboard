@@ -1,7 +1,7 @@
 'use client';
 import { useAppStore } from '../../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, X, Circle } from 'lucide-react';
+import { Activity, X } from 'lucide-react';
 import { formatDistanceToNow } from '../../utils/time';
 
 const STATUS_COLOR: Record<string, string> = {

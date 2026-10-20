@@ -1,0 +1,17 @@
+{
+  // Compiles tests/ (and the store/types they import) to CommonJS in
+  // .test-dist/ so Node's built-in test runner can execute them.
+  // Used by `npm test`; the Next.js build keeps using tsconfig.json.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".test-dist",
+    "rootDir": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "incremental": false,
+    "plugins": []
+  },
+  "include": ["tests/**/*.ts"],
+  "exclude": ["node_modules", ".next", ".test-dist"]
+}

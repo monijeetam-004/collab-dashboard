@@ -48,6 +48,18 @@ npm run dev
 
 Open http://localhost:3000
 
+## Running Tests
+
+```bash
+npm test
+```
+
+This compiles `tests/` with the TypeScript compiler and runs it with Node's
+built-in test runner (Node 22+, no extra test packages). The tests cover the
+undo/redo history in the Zustand store: step-by-step undo and redo across
+moves, edits, deletes and new cards; discarding redo after a new action; and
+the 50-entry history limit.
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |

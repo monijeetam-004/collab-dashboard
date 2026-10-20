@@ -5,11 +5,13 @@ import {
   Notification, HistoryEntry
 } from '../types';
 
+// Seed team for the demo board. u1 is the signed-in user; u2-u4 are
+// fictional demo teammates (marked "(demo)") used for presence and activity.
 const MOCK_USERS: User[] = [
   { id: 'u1', name: 'Monijeeta Moitra', avatar: 'MM', status: 'online', color: '#6366f1', currentPage: 'Board' },
-  { id: 'u2', name: 'Jitesh Varshney', avatar: 'JV', status: 'online', color: '#f59e0b', currentPage: 'Dashboard' },
-  { id: 'u3', name: 'Kashvi Nag', avatar: 'KN', status: 'away', color: '#10b981', currentPage: 'Settings' },
-  { id: 'u4', name: 'Harini R', avatar: 'HR', status: 'offline', color: '#ef4444', currentPage: undefined },
+  { id: 'u2', name: 'Ava (demo)', avatar: 'AV', status: 'online', color: '#f59e0b', currentPage: 'Dashboard' },
+  { id: 'u3', name: 'Ben (demo)', avatar: 'BE', status: 'away', color: '#10b981', currentPage: 'Settings' },
+  { id: 'u4', name: 'Cleo (demo)', avatar: 'CL', status: 'offline', color: '#ef4444', currentPage: undefined },
 ];
 
 const INITIAL_COLUMNS: Column[] = [

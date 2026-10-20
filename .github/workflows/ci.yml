@@ -1,0 +1,45 @@
+name: ci
+
+# Lint, type-check, test (when a test script exists) and build the app on
+# every push to main and on every pull request. No secrets are used.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: the job only needs to read the repository.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies (exactly as locked)
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint -- --max-warnings=0
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Production build
+        run: npm run build
